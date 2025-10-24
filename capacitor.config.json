@@ -1,0 +1,15 @@
+{
+  "appId": "com.acdikari.app",
+  "appName": "AC Dikari",
+  "webDir": "wwwroot",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://customer.dikariapp.com",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

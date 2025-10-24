@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dikariapp.customer.twa",
+      "sha256_cert_fingerprints":
+        ["29:F5:8A:BF:2B:81:A2:8B:97:03:A6:74:1D:54:67:66:AE:72:D9:F0:1D:71:D5:AE:D7:83:2F:B6:0F:10:63:11"]
+    }
+  }
+]

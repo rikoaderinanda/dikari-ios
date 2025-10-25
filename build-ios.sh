@@ -57,11 +57,21 @@ if [ ! -f "eas.json" ]; then
     echo "⚠️ EAS init gagal otomatis, membuat file eas.json manual..."
     cat <<EOF > eas.json
 {
+  "cli": {
+    "version": ">= 3.16.0",
+    "appVersionSource": "remote"
+  },
   "build": {
     "preview": {
       "distribution": "internal",
       "ios": {
-        "buildType": "simulator"
+        "simulator": true
+      }
+    },
+    "production": {
+      "distribution": "store",
+      "ios": {
+        "simulator": false
       }
     }
   }
@@ -71,13 +81,63 @@ EOF
 fi
 
 # =========================
-# 6️⃣ Sync Capacitor iOS
+# 6️⃣ Pastikan Xcode Scheme ada (otomatis)
+# =========================
+SCHEME_PATH="ios/App/App.xcodeproj/xcshareddata/xcschemes"
+SCHEME_FILE="$SCHEME_PATH/App.xcscheme"
+
+if [ ! -f "$SCHEME_FILE" ]; then
+  echo "🧩 Creating shared Xcode scheme..."
+  mkdir -p "$SCHEME_PATH"
+  cat <<EOF > "$SCHEME_FILE"
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1430"
+   version = "1.3">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintName = "App"
+               BuildableName = "App.app"
+               ReferencedContainer = "container:App.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <LaunchAction
+      buildConfiguration = "Release"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintName = "App"
+            BuildableName = "App.app"
+            ReferencedContainer = "container:App.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+</Scheme>
+EOF
+fi
+
+# =========================
+# 7️⃣ Sync Capacitor iOS
 # =========================
 echo "⚡ Syncing Capacitor iOS project..."
 npx cap sync ios
 
 # =========================
-# 7️⃣ Build .ipa via EAS Cloud
+# 8️⃣ Build .ipa via EAS Cloud
 # =========================
 echo "📱 Building iOS .ipa via EAS Cloud..."
 eas build -p ios --profile preview --non-interactive

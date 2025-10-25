@@ -9,6 +9,13 @@
         "distribution": "internal",
         "simulator": false
       }
+    },
+    "preview": {
+      "ios": {
+        "resourceClass": "m-medium",
+        "distribution": "internal",
+        "simulator": false
+      }
     }
   },
   "submit": {
